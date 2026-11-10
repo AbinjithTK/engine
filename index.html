@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Engine — build a company without a funding round</title>
-<meta name="description" content="A founder describes an outcome. It becomes scoped, priced work. People and AI agents do it side by side and get paid the moment it passes review. Paid in cash, equity, or both." />
+<title>Engine: get paid the moment the work is done</title>
+<meta name="description" content="A client describes the job. Engine scopes and prices it, the work gets done by a freelancer and their AI agents, and PayPal pays out the moment the work passes review. No invoice chasing." />
 <meta name="theme-color" content="#0a0a0b" />
 <meta property="og:title" content="Engine" />
-<meta property="og:description" content="Build a company without a funding round. Get paid in cash, equity, or both." />
+<meta property="og:description" content="Freelance work that pays itself. Scoped by AI, verified by AI, paid through PayPal the moment it passes." />
 <meta property="og:type" content="website" />
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230a0a0b'/%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='%234f7cff' stroke-width='2.5'/%3E%3Ccircle cx='16' cy='16' r='2.5' fill='%234f7cff'/%3E%3C/svg%3E" />
 <style>
@@ -15,7 +15,7 @@
     --bg:#0a0a0b; --surface:#111113; --card:#161619; --border:#232327;
     --fg:#f4f4f5; --muted:#a1a1aa; --faint:#71717a;
     --primary:#4f7cff; --primary-soft:rgba(79,124,255,.14);
-    --equity:#c084fc; --cash:#4ade80;
+    --cash:#4ade80; --cash-soft:rgba(74,222,128,.10);
     --radius:14px;
     --ease-out:cubic-bezier(.23,1,.32,1);
     --maxw:1080px;
@@ -28,13 +28,10 @@
   a{color:inherit;text-decoration:none}
   .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
   .tnum{font-variant-numeric:tabular-nums}
-
-  /* ambient glow */
   body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
     background:radial-gradient(60% 50% at 50% -10%,rgba(79,124,255,.16),transparent 70%)}
   main,header,footer{position:relative;z-index:1}
 
-  /* nav */
   header{position:sticky;top:0;z-index:50;backdrop-filter:blur(12px);
     background:rgba(10,10,11,.72);border-bottom:1px solid transparent;transition:border-color .3s}
   header.scrolled{border-color:var(--border)}
@@ -45,48 +42,61 @@
   .nav-links a{transition:color .2s}.nav-links a:hover{color:var(--fg)}
   .btn{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:550;
     padding:9px 16px;border-radius:10px;border:1px solid var(--border);
-    transition:transform .12s var(--ease-out),background .2s,border-color .2s;will-change:transform}
+    transition:transform .12s var(--ease-out),background .2s,border-color .2s}
   .btn:active{transform:scale(.97)}
   .btn-primary{background:var(--primary);border-color:var(--primary);color:#fff}
   .btn-primary:hover{background:#6a90ff}
   .btn-ghost:hover{border-color:#39393f;background:var(--surface)}
   @media(max-width:720px){.nav-links a:not(.btn){display:none}}
 
-  /* hero */
-  .hero{padding:96px 0 72px;text-align:center}
+  .hero{padding:96px 0 64px;text-align:center}
   .tag{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);
     border:1px solid var(--border);background:var(--surface);padding:6px 14px;border-radius:999px;margin-bottom:28px}
-  .tag .dot{width:7px;height:7px;border-radius:50%;background:var(--primary);box-shadow:0 0 0 4px var(--primary-soft)}
-  h1{font-size:clamp(38px,6.2vw,68px);line-height:1.04;letter-spacing:-.03em;font-weight:700;max-width:16ch;margin:0 auto}
-  h1 .grad{background:linear-gradient(100deg,#fff 10%,#8fb0ff 55%,var(--equity));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-  .sub{font-size:clamp(17px,2.2vw,20px);color:var(--muted);max-width:60ch;margin:26px auto 0;line-height:1.5}
+  .tag .dot{width:7px;height:7px;border-radius:50%;background:var(--cash);box-shadow:0 0 0 4px var(--cash-soft)}
+  h1{font-size:clamp(38px,6.2vw,68px);line-height:1.04;letter-spacing:-.03em;font-weight:700;max-width:15ch;margin:0 auto}
+  h1 .grad{background:linear-gradient(100deg,#fff 10%,#8fb0ff 50%,var(--cash));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .sub{font-size:clamp(17px,2.2vw,20px);color:var(--muted);max-width:58ch;margin:26px auto 0;line-height:1.5}
   .cta{display:flex;gap:14px;justify-content:center;margin-top:40px;flex-wrap:wrap}
   .cta .btn{padding:13px 24px;font-size:15px}
 
-  /* equation line */
-  .equation{margin:64px auto 0;max-width:760px;display:flex;flex-wrap:wrap;gap:10px 14px;justify-content:center;
-    font-family:var(--mono);font-size:14px;color:var(--muted)}
-  .equation b{color:var(--fg);font-weight:600}
-  .equation .op{color:var(--faint)}
+  /* payout receipt */
+  .receipt{max-width:460px;margin:60px auto 0;text-align:left;background:var(--card);border:1px solid var(--border);
+    border-radius:18px;padding:22px 24px;font-size:14px}
+  .receipt .row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--border)}
+  .receipt .row:last-child{border-bottom:0}
+  .receipt .k{color:var(--muted)}
+  .receipt .v{font-variant-numeric:tabular-nums;font-weight:600}
+  .pill{font-size:12px;font-weight:650;padding:3px 10px;border-radius:999px;border:1px solid}
+  .pill.ok{color:var(--cash);border-color:rgba(74,222,128,.35);background:var(--cash-soft)}
+  .pill.blue{color:#8fb0ff;border-color:rgba(79,124,255,.35);background:var(--primary-soft)}
+  .receipt .head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+  .receipt .head b{font-size:15px}
+  .receipt .note{font-size:12px;color:var(--faint);margin-top:10px}
 
-  /* sections */
   section{padding:84px 0}
   .eyebrow{font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--primary);margin-bottom:14px}
-  h2{font-size:clamp(28px,4vw,40px);letter-spacing:-.02em;line-height:1.1;font-weight:680;max-width:20ch}
+  h2{font-size:clamp(28px,4vw,40px);letter-spacing:-.02em;line-height:1.1;font-weight:680;max-width:21ch}
   .lead{color:var(--muted);font-size:18px;max-width:62ch;margin-top:16px}
 
-  /* flow steps */
+  .stats{display:grid;gap:14px;margin-top:44px}
+  @media(min-width:760px){.stats{grid-template-columns:repeat(3,1fr)}}
+  .stat{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:24px}
+  .stat .n{font-size:40px;font-weight:700;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+  .stat p{color:var(--muted);font-size:14px;margin-top:4px}
+  .src{font-size:12px;color:var(--faint);margin-top:14px}
+  .src a{text-decoration:underline;text-underline-offset:2px}
+
   .flow{display:grid;gap:14px;margin-top:48px}
   @media(min-width:860px){.flow{grid-template-columns:repeat(5,1fr)}}
   .step{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:22px 20px;
-    transition:transform .3s var(--ease-out),border-color .3s,opacity .5s var(--ease-out);position:relative}
+    transition:transform .3s var(--ease-out),border-color .3s}
   .step:hover{border-color:#34343c;transform:translateY(-3px)}
-  .step .n{font-family:var(--mono);font-size:12px;color:var(--primary);border:1px solid var(--primary-soft);
-    background:var(--primary-soft);width:28px;height:28px;display:grid;place-items:center;border-radius:8px;margin-bottom:16px}
+  .step .n{font-family:var(--mono);font-size:12px;color:var(--primary);background:var(--primary-soft);
+    width:28px;height:28px;display:grid;place-items:center;border-radius:8px;margin-bottom:16px}
+  .step.pay .n{color:var(--cash);background:var(--cash-soft)}
   .step h3{font-size:16px;letter-spacing:-.01em;margin-bottom:8px}
   .step p{font-size:14px;color:var(--muted);line-height:1.5}
 
-  /* two-col audiences */
   .cols{display:grid;gap:20px;margin-top:48px}
   @media(min-width:800px){.cols{grid-template-columns:1fr 1fr}}
   .panel{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:34px 30px}
@@ -94,63 +104,48 @@
   .panel .role{font-size:13px;color:var(--primary);font-weight:600;margin-bottom:18px}
   .panel p{color:var(--muted);font-size:15px;margin-bottom:18px}
   .panel ul{list-style:none;display:grid;gap:12px}
-  .panel li{display:flex;gap:11px;font-size:14.5px;color:var(--fg)}
-  .panel li svg{flex:0 0 18px;margin-top:3px;color:var(--primary)}
+  .panel li{display:flex;gap:11px;font-size:14.5px}
+  .panel li svg{flex:0 0 18px;margin-top:3px;color:var(--cash)}
 
-  /* reward chips */
-  .rewards{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
-  .chip{font-size:13px;font-weight:600;padding:7px 14px;border-radius:999px;border:1px solid var(--border)}
-  .chip.cash{color:var(--cash);border-color:rgba(74,222,128,.35);background:rgba(74,222,128,.08)}
-  .chip.equity{color:var(--equity);border-color:rgba(192,132,252,.35);background:rgba(192,132,252,.08)}
+  .pp{display:grid;gap:12px;margin-top:48px}
+  @media(min-width:720px){.pp{grid-template-columns:repeat(2,1fr)}}
+  @media(min-width:1000px){.pp{grid-template-columns:repeat(3,1fr)}}
+  .ppc{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px}
+  .ppc h4{font-size:15px;margin-bottom:6px}
+  .ppc .api{font-family:var(--mono);font-size:11px;color:var(--primary);margin-bottom:10px}
+  .ppc p{font-size:13.5px;color:var(--muted);line-height:1.5}
 
-  /* agent grid */
-  .agents{display:grid;gap:12px;margin-top:48px}
-  @media(min-width:720px){.agents{grid-template-columns:repeat(2,1fr)}}
-  @media(min-width:1000px){.agents{grid-template-columns:repeat(4,1fr)}}
-  .agent{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px}
-  .agent h4{font-size:15px;margin-bottom:6px;display:flex;align-items:center;gap:8px}
-  .agent .pill{font-family:var(--mono);font-size:10px;color:var(--primary);background:var(--primary-soft);padding:2px 7px;border-radius:5px}
-  .agent p{font-size:13px;color:var(--muted);line-height:1.5}
+  .guard{display:grid;gap:12px;margin-top:40px}
+  @media(min-width:760px){.guard{grid-template-columns:repeat(2,1fr)}}
+  .g{display:flex;gap:12px;font-size:14.5px;color:var(--muted);padding:18px;background:var(--surface);border:1px solid var(--border);border-radius:12px}
+  .g b{color:var(--fg);font-weight:600;display:block;margin-bottom:2px}
+  .g .ic{flex:0 0 22px;color:var(--cash)}
 
-  /* mcp block */
-  .mcp{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:40px;margin-top:48px;
-    display:grid;gap:32px}
+  .mcp{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:40px;margin-top:48px;display:grid;gap:32px}
   @media(min-width:860px){.mcp{grid-template-columns:1.1fr 1fr;align-items:center}}
   .code{background:#050506;border:1px solid var(--border);border-radius:12px;padding:20px;font-family:var(--mono);
-    font-size:13px;line-height:1.7;color:var(--muted);overflow-x:auto}
+    font-size:13px;line-height:1.75;color:var(--muted);overflow-x:auto;white-space:pre}
   .code .k{color:var(--primary)}.code .s{color:var(--cash)}.code .c{color:var(--faint)}
 
-  /* honest limits */
-  .limits{display:grid;gap:12px;margin-top:40px}
-  @media(min-width:760px){.limits{grid-template-columns:repeat(2,1fr)}}
-  .limit{display:flex;gap:12px;font-size:14.5px;color:var(--muted);padding:16px 18px;
-    background:var(--surface);border:1px solid var(--border);border-radius:12px}
-  .limit b{color:var(--fg);font-weight:600}
+  .fee{display:grid;gap:14px;margin-top:40px}
+  @media(min-width:760px){.fee{grid-template-columns:repeat(3,1fr)}}
+  .fee .stat .n{font-size:34px}
 
-  /* status banner */
-  .status{border:1px solid rgba(192,132,252,.3);background:linear-gradient(180deg,rgba(192,132,252,.06),transparent);
-    border-radius:16px;padding:28px 30px;margin-top:32px}
-  .status h3{font-size:16px;margin-bottom:10px;color:var(--equity)}
-  .status p{color:var(--muted);font-size:14.5px;max-width:70ch}
-  .status code{font-family:var(--mono);font-size:13px;color:var(--fg);background:var(--card);padding:2px 6px;border-radius:5px}
+  .status{border:1px solid var(--border);border-radius:16px;padding:26px 28px;margin-top:32px;background:var(--surface)}
+  .status h3{font-size:15px;margin-bottom:12px}
+  .status ul{list-style:none;display:grid;gap:8px;font-size:14.5px;color:var(--muted)}
+  .status li b{color:var(--fg);font-weight:600}
 
-  /* final cta */
   .final{text-align:center;padding:100px 0}
-  .final h2{margin:0 auto}
-  .final .lead{margin:18px auto 0}
+  .final h2{margin:0 auto}.final .lead{margin:18px auto 0}
 
   footer{border-top:1px solid var(--border);padding:40px 0;color:var(--faint);font-size:13px}
   .foot{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
   .foot a{color:var(--muted);transition:color .2s}.foot a:hover{color:var(--fg)}
 
-  /* reveal */
-  .reveal{opacity:0;transform:translateY(18px);transition:opacity .6s var(--ease-out),transform .6s var(--ease-out)}
-  .reveal.in{opacity:1;transform:none}
-  @media(prefers-reduced-motion:reduce){
-    .reveal{opacity:1;transform:none;transition:none}
-    html{scroll-behavior:auto}
-    *{animation:none!important}
-  }
+  .js .reveal{opacity:0;transform:translateY(18px);transition:opacity .6s var(--ease-out),transform .6s var(--ease-out)}
+  .js .reveal.in{opacity:1;transform:none}
+  @media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}html{scroll-behavior:auto}}
 </style>
 </head>
 <body>
@@ -163,9 +158,9 @@
     </a>
     <nav class="nav-links">
       <a href="#how">How it works</a>
-      <a href="#who">Who it's for</a>
-      <a href="#agents">The agents</a>
-      <a href="#byo">Bring your own AI</a>
+      <a href="#paypal">PayPal</a>
+      <a href="#guardrails">Guardrails</a>
+      <a href="#pricing">Pricing</a>
       <a class="btn btn-primary" href="https://github.com/AbinjithTK/engine" target="_blank" rel="noopener">GitHub</a>
     </nav>
   </div>
@@ -173,152 +168,170 @@
 
 <main id="top">
 
-  <!-- HERO -->
   <section class="hero">
     <div class="wrap">
-      <span class="tag reveal"><span class="dot"></span> Build with Gemini XPRIZE project</span>
-      <h1 class="reveal">Build a company<br>without a <span class="grad">funding round</span>.</h1>
-      <p class="sub reveal">A founder describes what they want. It becomes work, priced automatically. People and AI agents do that work side by side, and get paid the moment it passes review. In cash, equity, or both.</p>
+      <span class="tag reveal"><span class="dot"></span> Payments by PayPal</span>
+      <h1 class="reveal">Work that <span class="grad">pays itself</span> the moment it's done.</h1>
+      <p class="sub reveal">A client describes the job. Engine scopes and prices it, a freelancer and their AI agents do it, and an AI reviewer checks it against what was agreed. When it passes, PayPal pays the freelancer. Nobody writes an invoice or chases one.</p>
       <div class="cta reveal">
         <a class="btn btn-primary" href="#how">See how it works</a>
         <a class="btn btn-ghost" href="https://github.com/AbinjithTK/engine" target="_blank" rel="noopener">Read the code</a>
       </div>
 
-      <div class="equation reveal" aria-label="A Party wants an Outcome. The Outcome becomes Work. A Doer does the Work.">
-        <span><b>Party</b> wants an</span><span class="op">→</span>
-        <span><b>Outcome</b></span><span class="op">→</span>
-        <span>becomes <b>Work</b></span><span class="op">→</span>
-        <span>a <b>Doer</b> does it</span><span class="op">·</span>
-        <span>human, agent, or both</span>
+      <div class="receipt reveal" aria-label="Example payout">
+        <div class="head"><b>Pricing page rewrite</b><span class="pill ok">Paid</span></div>
+        <div class="row"><span class="k">Budget approved by client</span><span class="v">$800.00</span></div>
+        <div class="row"><span class="k">Acceptance criteria</span><span class="v">5 of 5 passed</span></div>
+        <div class="row"><span class="k">Reviewed by</span><span class="pill blue">Review agent</span></div>
+        <div class="row"><span class="k">Paid to freelancer via PayPal</span><span class="v">$800.00</span></div>
+        <div class="row"><span class="k">Time from submit to paid</span><span class="v">4 min</span></div>
+        <p class="note">Example of how a payout reads. Figures are illustrative.</p>
       </div>
     </div>
   </section>
 
-  <!-- HOW -->
+  <section id="problem">
+    <div class="wrap">
+      <div class="eyebrow reveal">The problem</div>
+      <h2 class="reveal">Freelancers lose their leverage the moment they hand over the work.</h2>
+      <p class="lead reveal">Then they wait, send reminders, and sometimes never get paid. Clients don't enjoy it either: writing briefs is hard, and they can't see what's happening until the work lands.</p>
+      <div class="stats">
+        <div class="stat reveal"><div class="n">85%</div><p>of freelancers are paid late at least some of the time</p></div>
+        <div class="stat reveal"><div class="n">58%</div><p>have had a client who never paid at all</p></div>
+        <div class="stat reveal"><div class="n">28.8</div><p>days, the average wait for a US small business to get paid in early 2026</p></div>
+      </div>
+      <p class="src reveal">Sources: <a href="https://thrivemyway.com/freelancer-written-contract-laws/" target="_blank" rel="noopener">ThriveMyWay 2026 freelancer survey roundup</a>, <a href="https://stealthagents.com/research/small-business-invoice-follow-up-workload-statistics-2026" target="_blank" rel="noopener">Xero transaction data via Stealth Agents</a>.</p>
+    </div>
+  </section>
+
   <section id="how">
     <div class="wrap">
       <div class="eyebrow reveal">How it works</div>
-      <h2 class="reveal">Briefing and trust are what make hiring expensive. Both are context problems.</h2>
-      <p class="lead reveal">So the AI does the context and coordination work — scoping, pricing, briefing, matching, verifying, settling. Humans do the part that needs taste and judgement.</p>
-
+      <h2 class="reveal">The money is agreed before the work starts, and released when it passes.</h2>
+      <p class="lead reveal">AI handles the parts that make freelance work slow: writing the brief, pricing it, checking the result and paying out. People do the actual work.</p>
       <div class="flow">
-        <div class="step reveal"><div class="n">1</div><h3>Describe</h3><p>A founder states an outcome in plain English. No brief, no spec document.</p></div>
-        <div class="step reveal"><div class="n">2</div><h3>Scope &amp; price</h3><p>The Scoping agent turns it into work with acceptance criteria and a proposed price. The founder approves.</p></div>
-        <div class="step reveal"><div class="n">3</div><h3>Match &amp; brief</h3><p>A doer is matched and handed exactly the context that task needs — nothing more.</p></div>
-        <div class="step reveal"><div class="n">4</div><h3>Verify</h3><p>The Review agent checks the result against the criteria written at scoping time, with reasoning.</p></div>
-        <div class="step reveal"><div class="n">5</div><h3>Settle</h3><p>On a pass, funds release. No human clicks approve. Cash or equity.</p></div>
+        <div class="step reveal"><div class="n">1</div><h3>Describe</h3><p>The client sends a message or a voice note. No brief template.</p></div>
+        <div class="step reveal"><div class="n">2</div><h3>Scope &amp; price</h3><p>The Scoping agent writes acceptance criteria and a price. The client approves the budget once, through PayPal.</p></div>
+        <div class="step reveal"><div class="n">3</div><h3>Do the work</h3><p>The freelancer gets the brief and only the context the job needs, in the app or in their own editor.</p></div>
+        <div class="step reveal"><div class="n">4</div><h3>Verify</h3><p>The Review agent checks each criterion and shows its reasoning, so both sides see why.</p></div>
+        <div class="step pay reveal"><div class="n">5</div><h3>Get paid</h3><p>On a pass, the payment agent releases the approved amount through PayPal. Invoice and receipt are generated automatically.</p></div>
       </div>
     </div>
   </section>
 
-  <!-- WHO -->
   <section id="who">
     <div class="wrap">
       <div class="eyebrow reveal">Who it's for</div>
-      <h2 class="reveal">Two sides, one shared context layer.</h2>
+      <h2 class="reveal">One link between a freelancer and a client.</h2>
       <div class="cols">
         <div class="panel reveal">
-          <div class="role">For founders</div>
-          <h3>A vision, not much money.</h3>
-          <p>Describe the outcome. The platform turns it into scoped, priced work, finds who can do it, hands over exactly the context they need, checks the result, and settles. You never write a brief or chase a status update.</p>
+          <div class="role">For freelancers</div>
+          <h3>Stop sending invoices.</h3>
+          <p>Bring your existing clients with a link. Every job you take already has a budget the client approved, so getting paid depends on the work passing, not on someone remembering to pay you.</p>
           <ul>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>Plain-English goal becomes a funded task</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>Ask an agent for status instead of chasing people</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>Out of cash? Offer a share of the company instead</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>Budget approved before you start</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>Paid to your PayPal minutes after a pass</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>A clear brief, so no unpaid hours working out the job</li>
           </ul>
         </div>
         <div class="panel reveal">
-          <div class="role">For skilled people</div>
-          <h3>Paid for taste, not logged hours.</h3>
-          <p>Work on as many companies as you like, on your own terms. No employment, no onboarding calls, no unpaid hours spent understanding a business. Over time you don't have a gig history — you have a portfolio of ownership across the companies you helped build.</p>
+          <div class="role">For clients</div>
+          <h3>Pay for results, not promises.</h3>
+          <p>Say what you need in your own words. You see progress without asking, approve each item, and your money only moves when the work meets the criteria you agreed to.</p>
           <ul>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>Understand any task in two minutes, not two weeks</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>Paid on approval, never chasing an invoice</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>Take cash, or take equity in what you believe in</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>A brief written for you</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>Pay with PayPal, card or Pay Later</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>Nothing is paid for work that hasn't passed</li>
           </ul>
-          <div class="rewards">
-            <span class="chip cash">● Cash</span>
-            <span class="chip equity">● Equity</span>
-            <span class="chip" style="color:var(--muted)">● Or a mix of both</span>
-          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- AGENTS -->
-  <section id="agents">
+  <section id="paypal">
     <div class="wrap">
-      <div class="eyebrow reveal">The agents</div>
-      <h2 class="reveal">AI that owns decisions with consequences.</h2>
-      <p class="lead reveal">Not an LLM wrapped in a form. Each agent owns one consequential decision, and a human holds the veto.</p>
-      <div class="agents">
-        <div class="agent reveal"><h4>Scoping <span class="pill">prices</span></h4><p>Turns a goal into a spec, acceptance criteria, and what the work is worth.</p></div>
-        <div class="agent reveal"><h4>Matching <span class="pill">offers</span></h4><p>Ranks who should do the work, with written reasoning. The founder confirms.</p></div>
-        <div class="agent reveal"><h4>Briefing <span class="pill">scopes</span></h4><p>Hands over the context a task needs and withholds the rest — a real security boundary.</p></div>
-        <div class="agent reveal"><h4>Review <span class="pill">verifies</span></h4><p>Judges the work against its criteria: pass, needs-changes, or fail, with reasoning.</p></div>
-        <div class="agent reveal"><h4>Payout <span class="pill">settles</span></h4><p>Moves money the moment work passes. No human clicks approve.</p></div>
-        <div class="agent reveal"><h4>Status <span class="pill">reports</span></h4><p>Answers "where is the auth refactor?" from task state, reviews and repo activity.</p></div>
-        <div class="agent reveal"><h4>Context chat <span class="pill">answers</span></h4><p>Answers a doer's questions from the scoped context, so they never block on the founder.</p></div>
-        <div class="agent reveal"><h4>Ingestor <span class="pill">learns</span></h4><p>Reads docs, repos and interviews into a queryable Company Brain.</p></div>
+      <div class="eyebrow reveal">Built on PayPal</div>
+      <h2 class="reveal">PayPal's agent tools do the paying.</h2>
+      <p class="lead reveal">Engine's agents connect to PayPal through the official <a href="https://github.com/paypal/agent-toolkit" target="_blank" rel="noopener" style="text-decoration:underline;text-underline-offset:3px">PayPal Agent Toolkit</a> and MCP server, so every money step is a real PayPal operation the client and freelancer can see in their own accounts.</p>
+      <div class="pp">
+        <div class="ppc reveal"><div class="api">Orders · authorize</div><h4>Budget held up front</h4><p>When the client approves the price, the payment is authorized, so the freelancer knows the money exists before starting.</p></div>
+        <div class="ppc reveal"><div class="api">Orders · capture</div><h4>Released on a pass</h4><p>A passing review triggers the capture. The agent can only capture what the client already authorized.</p></div>
+        <div class="ppc reveal"><div class="api">Invoicing</div><h4>Invoices write themselves</h4><p>Approved items become a PayPal invoice with the criteria and review attached. No one types one up.</p></div>
+        <div class="ppc reveal"><div class="api">Refunds</div><h4>Clean refunds</h4><p>If work is cancelled or fails and isn't fixed, the authorization is voided or refunded, not argued about.</p></div>
+        <div class="ppc reveal"><div class="api">Disputes</div><h4>Disputes with evidence</h4><p>The criteria, each verdict and its reasoning become the evidence trail if a dispute is ever opened.</p></div>
+        <div class="ppc reveal"><div class="api">Transactions</div><h4>One view of what's owed</h4><p>Both sides see authorized, released and refunded amounts, read straight from PayPal.</p></div>
       </div>
     </div>
   </section>
 
-  <!-- BRING YOUR OWN AI -->
+  <section id="guardrails">
+    <div class="wrap">
+      <div class="eyebrow reveal">Guardrails</div>
+      <h2 class="reveal">The AI pays, but only what the client already agreed to.</h2>
+      <p class="lead reveal">Letting an agent move money only works if it can't move the wrong amount to the wrong person. These limits are built into the tools themselves.</p>
+      <div class="guard">
+        <div class="g reveal"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><span><b>Never more than authorized</b>The payment agent can capture up to the amount the client approved for that job, and nothing else.</span></div>
+        <div class="g reveal"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3 4 7v6c0 4.5 3.4 7.7 8 8 4.6-.3 8-3.5 8-8V7z"/></svg><span><b>No amount, no destination</b>Payment tools never take an amount or a recipient as input. Both come from the approved job.</span></div>
+        <div class="g reveal"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 12h8"/></svg><span><b>The reviewer can't pay</b>The agent that judges the work has no payment tools. Judging and paying are separate.</span></div>
+        <div class="g reveal"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12h16M12 4v16"/></svg><span><b>A human can always step in</b>Either side can appeal a verdict to a person before the payment releases. Design and copy work waits for the client's approval.</span></div>
+      </div>
+    </div>
+  </section>
+
   <section id="byo">
     <div class="wrap">
       <div class="eyebrow reveal">Bring your own AI</div>
-      <h2 class="reveal">A freelancer never has to open our app to be productive.</h2>
-      <p class="lead reveal">Point Claude, Cursor, or any MCP client at the endpoint. Your own tools read the briefs, ask questions about the company, post updates and submit work. Your editor already knows the company.</p>
-
+      <h2 class="reveal">Freelancers work from the tools they already use.</h2>
+      <p class="lead reveal">Point Claude, Cursor or any MCP client at Engine. Your editor can read the brief, ask questions about the job, post progress and submit. It can't touch the money.</p>
       <div class="mcp">
         <div class="reveal">
-          <h3 style="font-size:20px;letter-spacing:-.02em;margin-bottom:12px">Seven blocks. That's the whole product.</h3>
-          <p style="color:var(--muted);font-size:15px;margin-bottom:18px">Knowledge, Connections and Skills are what you give any worker — human or AI. They map exactly onto what MCP exposes: resources, tools, prompts. So the platform <em>is</em> an MCP server, with no translation layer.</p>
-          <p style="color:var(--faint);font-size:13.5px">No tool can send an invoice or move money without a human confirming it. The agent knows blocks and verbs, not screens — which is why it works everywhere.</p>
+          <h3 style="font-size:20px;letter-spacing:-.02em;margin-bottom:12px">Context, scoped to the job</h3>
+          <p style="color:var(--muted);font-size:15px">A freelancer sees what the job needs and nothing else about the client's business. Every read is logged.</p>
         </div>
-        <div class="code reveal" aria-hidden="true"><span class="c"># point any MCP client at the company</span>
-<span class="k">connect</span> <span class="s">"https://engine/api/mcp"</span>
+        <div class="code reveal" aria-hidden="true"><span class="c"># your editor, connected to Engine</span>
+<span class="k">get_brief</span>     pricing-page
+<span class="k">get_context</span>   pricing-page
+<span class="k">post_update</span>   <span class="s">"draft 1 is up"</span>
+<span class="k">submit_work</span>   <span class="s">"PR #42"</span>
 
-<span class="c"># your editor now knows the work</span>
-<span class="k">read</span>    briefs
-<span class="k">ask</span>     "what does done look like?"
-<span class="k">post</span>    progress
-<span class="k">submit</span>  deliverable
-
-<span class="c"># money stays human-gated</span>
-<span class="k">invoice</span> → <span class="c">needs human confirm</span></div>
+<span class="c"># review passes, then Engine's payment agent</span>
+<span class="k">paypal.capture</span> → <span class="s">$800.00 to you</span></div>
       </div>
     </div>
   </section>
 
-  <!-- HONEST STATUS / LIMITS -->
+  <section id="pricing">
+    <div class="wrap">
+      <div class="eyebrow reveal">Pricing</div>
+      <h2 class="reveal">Free for freelancers. A small fee for clients.</h2>
+      <p class="lead reveal">Freelancers keep what the client agreed to pay. Engine charges the client a fee on completed work only, below what the big marketplaces take.</p>
+      <div class="fee">
+        <div class="stat reveal"><div class="n">0%</div><p>fee for freelancers</p></div>
+        <div class="stat reveal"><div class="n">10%</div><p>fee for clients, charged only on work that passed</p></div>
+        <div class="stat reveal"><div class="n">~20%</div><p>what Upwork took on average in Q2 2026, for comparison</p></div>
+      </div>
+      <p class="src reveal">Upwork figure: $191.7M revenue on $966.4M gross services volume, <a href="https://sqmagazine.co.uk/upwork-statistics/" target="_blank" rel="noopener">SQ Magazine, Oct 2026</a>. PayPal's own processing fees apply.</p>
+    </div>
+  </section>
+
   <section id="status">
     <div class="wrap">
-      <div class="eyebrow reveal">Honest status</div>
-      <h2 class="reveal">What works, and what doesn't.</h2>
-      <p class="lead reveal">The build started four days before a 90-day deadline, so it was never submitted to the XPRIZE. This is an honest account of where it stands.</p>
-
+      <div class="eyebrow reveal">Status</div>
+      <h2 class="reveal">Where it stands today.</h2>
       <div class="status reveal">
-        <h3>Working today</h3>
-        <p>Deployed on Cloud Run. Gemini 2.5 Pro and 2.5 Flash verified live on Vertex AI. An MCP server with enforced context scoping, both interfaces, and the seven-block model end to end as a data model.</p>
-      </div>
-
-      <div class="limits">
-        <div class="limit reveal"><span>○</span><span><b>The loop doesn't fully close yet.</b> No auth, state is in memory, and no reward has been settled end to end. <code>GAPS.md</code> lists every gap, ordered by whether the loop breaks without it.</span></div>
-        <div class="limit reveal"><span>○</span><span><b>Not a cap table of record.</b> Equity commitments are tracked; share issuance stays with your lawyer and company registry.</span></div>
-        <div class="limit reveal"><span>○</span><span><b>Disputes are handled by a person</b>, not an arbitration system.</span></div>
-        <div class="limit reveal"><span>○</span><span><b>Nothing claims to be a model while it isn't.</b> The two deterministic stubs are marked in-code where a Gemini call replaces them.</span></div>
+        <ul>
+          <li><b>Working:</b> the job model, integer-only money maths, and an MCP server that scopes context and refuses out-of-scope reads.</li>
+          <li><b>Being built now:</b> the PayPal authorize, capture and invoicing flow, using PayPal's sandbox.</li>
+          <li><b>Next:</b> user accounts, saved data, and the Review agent wired into the app.</li>
+        </ul>
       </div>
     </div>
   </section>
 
-  <!-- FINAL CTA -->
   <section class="final">
     <div class="wrap">
-      <h2 class="reveal">Orchestrate people. Don't hire them.</h2>
-      <p class="lead reveal">AI is the connective tissue that lets a one-person company behave like a ten-person one.</p>
+      <h2 class="reveal">Finish the work. Get paid. That's it.</h2>
+      <p class="lead reveal">No invoices, no reminders, no waiting.</p>
       <div class="cta reveal" style="margin-top:36px">
         <a class="btn btn-primary" href="https://github.com/AbinjithTK/engine" target="_blank" rel="noopener">View on GitHub</a>
       </div>
@@ -329,15 +342,17 @@
 
 <footer>
   <div class="wrap foot">
-    <span>Engine · built by <a href="https://in.linkedin.com/in/abinjithtk" target="_blank" rel="noopener">Abinjith T K</a></span>
+    <span>Engine · built by <a href="https://in.linkedin.com/in/abinjithtk" target="_blank" rel="noopener">Abinjith T K</a> · PayPal is a trademark of PayPal, Inc.</span>
     <span><a href="https://github.com/AbinjithTK" target="_blank" rel="noopener">GitHub</a> · <a href="https://in.linkedin.com/in/abinjithtk" target="_blank" rel="noopener">LinkedIn</a></span>
   </div>
 </footer>
 
 <script>
+  document.documentElement.classList.add('js');
+  setTimeout(()=>document.querySelectorAll('.reveal').forEach(el=>el.classList.add('in')),2500);
   const hdr=document.getElementById('hdr');
   addEventListener('scroll',()=>hdr.classList.toggle('scrolled',scrollY>8),{passive:true});
-  const io=new IntersectionObserver((es)=>{es.forEach((e,i)=>{if(e.isIntersecting){
+  const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){
     const sibs=[...e.target.parentElement.children].filter(c=>c.classList.contains('reveal'));
     e.target.style.transitionDelay=(Math.min(sibs.indexOf(e.target),6)*55)+'ms';
     e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.12,rootMargin:'0px 0px -8% 0px'});

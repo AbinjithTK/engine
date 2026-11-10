@@ -1,47 +1,45 @@
 # Engine
 
-**Build a company without a funding round. Get paid in cash, equity, or both.**
+**Work that pays itself the moment it's done.**
 
-A founder describes what they want. It becomes work, priced automatically. People and AI
-agents do that work side by side, and get paid the moment it passes review. When there is no
-cash, the founder offers a share of the company instead.
+A client describes the job. Engine scopes and prices it, a freelancer and their AI agents do
+the work, and an AI reviewer checks it against the agreed criteria. When it passes, PayPal pays
+the freelancer. Nobody writes or chases an invoice.
 
-This repository holds the **landing site** for Engine. It is a single, self-contained
-`index.html` — no build step — served via GitHub Pages.
+This repository holds the **landing site**: a single self-contained `index.html`, served by
+GitHub Pages.
 
 👉 **Live site:** https://abinjithtk.github.io/engine/
 
-## The model
+## How payment works
 
-Seven building blocks. A **Party** wants an **Outcome**; the Outcome becomes **Work**; a
-**Doer** (a person, an agent, or a team of both) does it, equipped with **Knowledge**,
-**Connections** and **Skills**. Those last three map exactly onto what MCP exposes —
-resources, tools, prompts — which is why the platform can be an MCP server with no
-translation layer.
+Built on the [PayPal Agent Toolkit](https://github.com/paypal/agent-toolkit) and MCP server.
 
-## Why AI is in the middle
+1. The client approves the price. The PayPal order is **authorized**, so the money is held before work starts.
+2. The freelancer submits. The Review agent checks each acceptance criterion and records its reasoning.
+3. On a pass, the payment agent **captures** the authorized amount and issues a PayPal **invoice** and receipt.
+4. Cancelled or failed work is voided or **refunded**. The criteria and verdicts are the evidence trail for any **dispute**.
 
-Briefing and trust are what make hiring expensive, and both are context problems. So AI does
-the context and coordination work — scoping, pricing, briefing, matching, verifying,
-settling — and humans do the part that needs taste and judgement. No agent can commit cash or
-grant equity without a human confirming it.
+## Guardrails
 
-## Run locally
-
-It's one static file. Open `index.html` in a browser, or:
-
-```bash
-python -m http.server 8000
-# then open http://127.0.0.1:8000
-```
+- The payment agent can never capture more than the client authorized for that job.
+- Payment tools take no amount or recipient as input; both come from the approved job.
+- The agent that reviews work holds no payment tools.
+- Either side can appeal a verdict to a person before payment releases.
 
 ## Status
 
-Built for the Build with Gemini XPRIZE. The full application prototype (Next.js, Cloud Run,
-Vertex AI Gemini 2.5, an MCP server with enforced context scoping) lives in a separate
-repository. See that project's `GAPS.md` for an honest account of what closes the loop and
-what doesn't.
+- **Working:** job model, integer-only money maths, MCP server with scoped context.
+- **Being built:** PayPal authorize, capture and invoicing in the PayPal sandbox.
+- **Next:** accounts, persistence, Review agent wired into the app.
+
+## Run locally
+
+```bash
+python -m http.server 8000 --bind 127.0.0.1
+# open http://127.0.0.1:8000
+```
 
 ---
 
-Built by [Abinjith T K](https://in.linkedin.com/in/abinjithtk).
+Built by [Abinjith T K](https://in.linkedin.com/in/abinjithtk). PayPal is a trademark of PayPal, Inc.
